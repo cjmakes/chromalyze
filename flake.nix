@@ -15,7 +15,12 @@
       in
         with pkgs; {
           devShells.default = mkShell {
-            buildInputs = [ (python311Packages.opencv4.override { enableGtk2 = true; }) ];
+            buildInputs = [
+                    pkgs.python311Packages.jedi-language-server
+                    pkgs.python311Packages.ipython
+                    pkgs.python311Packages.matplotlib
+		    (python311Packages.opencv4.override { enableGtk2 = true; })
+	    ];
           };
         }
     );
