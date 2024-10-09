@@ -16,23 +16,24 @@
       in
         with pkgs; {
           devShells.default = mkShell {
-            buildInputs = [
-                    pkgs.python311Packages.jedi-language-server
-                    pkgs.python311Packages.ipython
-                    pkgs.python311Packages.matplotlib
-		    (python311Packages.opencv4.override { enableGtk2 = true; })
-	    ];
+              buildInputs = [
+                  pkgs.python311Packages.jedi-language-server
+                  pkgs.python311Packages.ipython
+                  pkgs.python311Packages.matplotlib
+                  pkgs.python311Packages.tqdm
+                  (python311Packages.opencv4.override { enableGtk2 = true; })
+              ];
           };
-	  packages.default = python311Packages.buildPythonApplication {
-		  pname = "chromalyze";
-		  version = "0.1";
-		  pyproject = true;
-		  nativeBuildInputs = [
-		    python311Packages.setuptools
-		    python311Packages.wheel
-		  ];
-		  src = ./.;
-	  };
+      packages.default = python311Packages.buildPythonApplication {
+          pname = "chromalyze";
+          version = "0.1";
+          pyproject = true;
+          nativeBuildInputs = [
+            python311Packages.setuptools
+            python311Packages.wheel
+          ];
+          src = ./.;
+      };
         }
 
     );
@@ -40,33 +41,33 @@
 
 # This is also possible using an override
 # {
-# 	description = "A very basic flake";
+#     description = "A very basic flake";
 # 
-# 	inputs = {
-# 		nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-# 	};
+#     inputs = {
+#         nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+#     };
 # 
-# 	outputs = { self, nixpkgs }: 
+#     outputs = { self, nixpkgs }: 
 #  let
-# 	system = "x86_64-linux";
-# 	pkgs = import nixpkgs {
-# 		inherit system;
-# 		overlays = [
-# 		(final: prev: {
-# 			python311 = prev.python311.override {
-# 				packageOverrides = pyfinal: pyprev: {
-# 					opencv4 = pyprev.opencv4.override {
-# 					 enableGtk2 = true; 
-# 					};
-# 				};
-# 			};
-# 		})
-# 		];
-# 	};
-# 	in
-# 	{
-# 		devShells.x86_64-linux.default = pkgs.mkShell {
-# 			buildInputs = [ pkgs.python311Packages.opencv4 ];
-# 		};
-# 	};
+#     system = "x86_64-linux";
+#     pkgs = import nixpkgs {
+#         inherit system;
+#         overlays = [
+#         (final: prev: {
+#             python311 = prev.python311.override {
+#                 packageOverrides = pyfinal: pyprev: {
+#                     opencv4 = pyprev.opencv4.override {
+#                      enableGtk2 = true; 
+#                     };
+#                 };
+#             };
+#         })
+#         ];
+#     };
+#     in
+#     {
+#         devShells.x86_64-linux.default = pkgs.mkShell {
+#             buildInputs = [ pkgs.python311Packages.opencv4 ];
+#         };
+#     };
 # }

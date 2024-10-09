@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-
+from tqdm import tqdm
 
 def get_colors(path: str, samplerate: float = 0.25):
     cap = cv2.VideoCapture(path)
@@ -10,21 +10,21 @@ def get_colors(path: str, samplerate: float = 0.25):
         print(f"Error: Couldn't open video file {path}")
         exit()
 
-    total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     skip = total_frames / (total_frames * samplerate)
     frame_number = 0
     bgrs = []
-    while frame_number < total_frames:
-        ret, frame = cap.read()
-        if not ret:
-            print("End of video or error reading frame.")
-            break
+    with tqdm(total=total_frames, unit='frames') as pbar:
+        while frame_number < total_frames:
+            ret, frame = cap.read()
+            if not ret:
+                print("End of video or error reading frame.")
+                break
 
-        print(f"Processing frame {frame_number}")
-
-        bgrs.append(frame.mean(axis=(0,1)))
-        frame_number += skip
-        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+            bgrs.append(frame.mean(axis=(0,1)))
+            frame_number += skip
+            pbar.update(skip)
+            cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
 
     cap.release()
     return np.array(bgrs)
