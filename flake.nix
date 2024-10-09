@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    #bbb = builtins.fetchurl "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4";
   };
   outputs = {
     self,
@@ -22,7 +23,18 @@
 		    (python311Packages.opencv4.override { enableGtk2 = true; })
 	    ];
           };
+	  packages.default = python311Packages.buildPythonApplication {
+		  pname = "chromalyze";
+		  version = "0.1";
+		  pyproject = true;
+		  nativeBuildInputs = [
+		    python311Packages.setuptools
+		    python311Packages.wheel
+		  ];
+		  src = ./.;
+	  };
         }
+
     );
 }
 
