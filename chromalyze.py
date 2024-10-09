@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 
-def get_colors(path: str, samplerate: float = 0.25):
+def get_colors(path: str, samplerate: float = 0.03):
     cap = cv2.VideoCapture(path)
 
     if not cap.isOpened():
